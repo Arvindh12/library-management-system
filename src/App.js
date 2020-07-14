@@ -1,25 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Login from "./component/Login";
+import Searchbooks from "./component/Searchbooks";
+import Navbar from "./component/Navbar";
+import Register from "./component/Register";
+import History from "./component/History";
+import Userbooks from "./component/Userbooks";
+import { UserProvider } from "./userContext";
 
 function App() {
+  const [view, setView] = useState("login");
+
+  const [currentUser, setCurrentUser] = useState(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <UserProvider value={{currentUser, setCurrentUser , setView}}>
+        <Navbar currentUser={currentUser} setView={setView} />
+        {
+          {
+            login: <Login setCurrentUser={setCurrentUser} setView={setView} />,
+            searchbooks: <Searchbooks currentUser={currentUser} />,
+            register: <Register />,
+            mybooks: <Userbooks />,
+            history: <History />,
+          }[view]
+        }
+      </UserProvider>
+    </>
   );
 }
 
